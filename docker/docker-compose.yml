@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  keycloak-mysql:
+    container_name: keycloak-mysql
+    image: mysql:8.0
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: Od5m2M3WtNxx
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: Od5m2M3WtNxx
+#    volumes:
+#      - ./mysql:/var/lib/mysql
+    restart: always
+
+  keycloak-server:
+    container_name: keycloak-server
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+#    environment:
+#      KEYCLOAK_ADMIN: admin
+#      KEYCLOAK_ADMIN_PASSWORD: Od5m2M3WtNxx
+    command: ["start", "--optimized"]
+    depends_on:
+      - keycloak-mysql
+    restart: always
